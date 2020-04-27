@@ -1,0 +1,12 @@
+{
+    "id": "{F40D1C8E-09B0-DCB3-5927-05B2BB004C99}",
+    "author": "elueckel",
+    "name": "Irrigation Control",
+    "url": "https://github.com/elueckel/irrigation",
+    "compatibility": {
+        "version": "5.2"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}
