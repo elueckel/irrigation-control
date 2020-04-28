@@ -1,14 +1,13 @@
 {
     "elements":
     [
-		{ "type": "Label", "label": "Downloading forecasts requires a seperate WU API key" }
+		{ "type": "CheckBox", "name": "ComponentActive", "caption": "Component Active" },
+		{ "type": "ValidationTextBox", "name": "Hour", "caption": "Hour" },
+		{ "type": "ValidationTextBox", "name": "Minute", "caption": "Minute" }
     ],
 
 	"actions":
 	[
-		{ "type": "Button", "label": "Test download of weather forecast", "onClick": "WUPWSS_Forecast($id);" },
-		{ "type": "Button", "label": "Test download of current data", "onClick": "WUPWSS_CurrentPWSData($id);" },
-        	{ "type": "Button", "label": "Test upload of weather data", "onClick": "WUPWSS_UploadToWunderground($id);" }
 
 	]
 
