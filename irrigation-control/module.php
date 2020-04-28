@@ -39,7 +39,7 @@ if (!defined('vtBoolean')) {
 	  $now = new DateTime();
 	  $target = new DateTime();
 	  $target->modify('+1 day');
-	  $target->setTime(0, 1, 0);
+	  $target->setTime(12, 45, 0);
 	  $diff = $target->getTimestamp() - $now->getTimestamp();
 	  $interval = $diff * 1000;
 	  $this->SetTimerInterval('Execute', $interval);
