@@ -10,7 +10,7 @@ if (!defined('vtBoolean')) {
 }
 
 
-	class Symcon_GoDaddyDNS extends IPSModule
+	class Irrigation_Control extends IPSModule
 	
 	{
 		
@@ -36,14 +36,14 @@ if (!defined('vtBoolean')) {
 	}
 	
 	public function SetResetTimerInterval() {
-  $now = new DateTime();
-  $target = new DateTime();
-  $target->modify('+1 day');
-  $target->setTime(0, 1, 0);
-  $diff = $target->getTimestamp() - $now->getTimestamp();
-  $interval = $diff * 1000;
-  $this->SetTimerInterval('ResetTimer', $interval);
-} 	
+	  $now = new DateTime();
+	  $target = new DateTime();
+	  $target->modify('+1 day');
+	  $target->setTime(0, 1, 0);
+	  $diff = $target->getTimestamp() - $now->getTimestamp();
+	  $interval = $diff * 1000;
+	  $this->SetTimerInterval('Execute', $interval);
+	} 	
 	
 		
 	}
