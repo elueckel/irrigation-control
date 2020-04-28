@@ -20,7 +20,7 @@ if (!defined('vtBoolean')) {
 			parent::Create();
 			
 			//Properties
-			$this->RegisterTimer('ResetTimer', 0, 'IC_Execute($_IPS["TARGET"]);');
+			$this->RegisterTimer('Execute', 0, 'IC_Execute($_IPS["TARGET"]);');
 					
 	
 		}
