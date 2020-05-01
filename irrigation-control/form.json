@@ -1,14 +1,42 @@
 {
     "elements":
     [
-		{ "type": "CheckBox", "name": "ComponentActive", "caption": "Component Active" },
-		{ "type": "ValidationTextBox", "name": "Hour", "caption": "Hour" },
-		{ "type": "ValidationTextBox", "name": "Minute", "caption": "Minute" }
+		{ "type": "Label", "label": "Environment Data" },
+		{ "type": "Label", "label": "*******************************" },
+		{ "type": "SelectVariable", "name": "SensorSoilHumidity", "caption": "Soil Humidity" },
+		{ "type": "SelectVariable", "name": "SensorRain", "caption": "Rain Sensor" },
+		{ "type": "SelectVariable", "name": "SensorTemperature", "caption": "Temperature" },
+		{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" },
+		{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" },
+		{ "name": "MethodToEstimateDryout", "type": "Select", "caption": "MethodToEstimateDryout"},
+			"options": [
+				{ "label": "Soil Humidity", "value": "1" },
+				{ "label": "Evaporation", "value": "2" }
+				]
+			},
+		{ "type": "Label", "label": "Estimate Drought" },
+		{ "type": "Label", "label": "*******************************" },
+		{ "type": "NumberSpinner", "name": "EstimateDryoutDryingThreshold", "caption": "Drying Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
+		{ "type": "NumberSpinner", "name": "EstimateDryoutDryThreshold", "caption": "Dry Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
+		{ "type": "Label", "label": "Rain Forecast" },
+		{ "type": "Label", "label": "*******************************" },
+		{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
+		{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
+		{ "type": "Label", "label": "Group Settings" },
+		{ "type": "Label", "label": "*******************************" },
+		{ "type": "SelectTime", "name": "Group1StartTime", "caption": "Start Time" },
+		{ "type": "Label", "label": "String Settings" },
+		{ "type": "CheckBox", "name": "String1Active", "caption": "String1Active" },
+		{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" },
+		{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" },
+		{ "type": "ValidationTextBox", "name": "String1Time", "caption": "Minutes" }
     ],
 
 	"actions":
 	[
-
+		{ "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
+		{ "type": "Button", "label": "Test Estimate Needed Rain", "onClick": "IC_EstimateNeededRain($id);" },
+        { "type": "Button", "label": "Test SprinklerOperationGroup1", "onClick": "IC_SprinklerOperationGroup1($id);" }
 	]
 
 }
