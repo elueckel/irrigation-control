@@ -37,6 +37,7 @@
 		{ "type": "CheckBox", "name": "Group1MasterValveActive", "caption": "Active" },
 		{ "type": "SelectVariable", "name": "Group1MasterValve1", "caption": "Valve 1" },
 		{ "type": "SelectVariable", "name": "Group1MasterValve2", "caption": "Valve 2" },
+		{ "type": "NumberSpinner", "name": "Group1MasterValveWaitTime", "caption": "Delay", "suffix": "sec", "minimum": "0", "maximum": "60" },
 		{ "type": "Label", "label": "String 1" },
 		{ "type": "Label", "label": "*******************************" },
 		{ "type": "CheckBox", "name": "Group1String1Active", "caption": "Active" },
@@ -66,7 +67,13 @@
 		{ "type": "CheckBox", "name": "Group1String5Active", "caption": "Active" },
 		{ "type": "SelectVariable", "name": "Group1String5Valve1", "caption": "Valve 1" },
 		{ "type": "SelectVariable", "name": "Group1String5Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+		{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
+		{ "type": "Label", "label": "String 6" },
+		{ "type": "Label", "label": "*******************************" },
+		{ "type": "CheckBox", "name": "Group1String6Active", "caption": "Active" },
+		{ "type": "SelectVariable", "name": "Group1String6Valve1", "caption": "Valve 1" },
+		{ "type": "SelectVariable", "name": "Group1String6Valve2", "caption": "Valve 2" },
+		{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
     ],
 
 	"actions":
