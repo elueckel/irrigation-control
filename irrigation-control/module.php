@@ -43,6 +43,9 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterPropertyInteger("RainInXDaysMinimumDryingOutThreshold", 15);
 		$this->RegisterPropertyInteger("RainInXDaysMinimumDryThreshold", 40);
 
+		$this->RegisterPropertyBoolean("WriteToLog",0);
+		$this->RegisterPropertyBoolean("Notification",0); //To be fill with warning messages
+
 		//Gruppe 1
 		$this->RegisterPropertyBoolean("Group1Active", 0);
 		$this->RegisterPropertyInteger("Group1NumberStartHour","22");
@@ -199,6 +202,9 @@ class Irrigation_Control extends IPSModule
 	}
 
 	public function Watchdog() {
+
+		$Notification = $this->ReadPropertyBoolean("Notification");
+		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
 		
 		$this->EstimateSoilWetness();	// checks how dry the lawn is
 		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
@@ -225,6 +231,9 @@ class Irrigation_Control extends IPSModule
 			if ($CurrentRainBlocksIrrigation == 1) {
 				$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain has stopped - no further irrigation needed'),0);
 				SetValue($this->GetIDForIdent("Group1CurrentString"), 0); // places current string into waiting state = 0
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Regen hat aufgehört - Beregnung wird aufgrund von ausreichend Regen nicht fortgesetzt");							
+				}
 				$this->SprinklerOperationGroup1();
 			}
 			else if ($CurrentRainBlocksIrrigation == 0 ) {
@@ -232,19 +241,50 @@ class Irrigation_Control extends IPSModule
 				$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain has stopped - not enough rain - irrigation will continue'),0);
 				$RainStoppedAtGroup1String = $this->GetBuffer("RainStoppedAtGroup1String");
 				SetValue($this->GetIDForIdent("Group1CurrentString"), $RainStoppedAtGroup1String);
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Regen hat aufgehört - Es hat nicht ausreichend geregnet um Boden zu bewässern, Beregnung wird fortgesetzt");						
+				}
 				$this->SprinklerOperationGroup1();
 			}
-		}
+			
 
+		}
+		/*
+		if ($Notification == 1) {
+			$this->SetBuffer("NotifierTitle", "Wetter Warnung");
+			$this->SetBuffer("NotifierMessage", "Starke Sturmböen wurden erkannt ".$StormProtectionGust." km/h");
+			$this->CBWNotifyApp();
+			$StormNotification = 1;
+			$this->SetBuffer("StormNotification", 1);
+									
+		}
+		if ($WriteToLog == 1) {
+			IPS_LogMessage("Steuerung für Bewässerung", 'Strong gusts were detected ').$StormProtectionGust." km/h");
+			$StormLogging = 1;
+			$this->SetBuffer("StormLogging", 1);
+									
+		}
+		*/
 		//set via webfront and will block any sprinkler operation until disabled
 		$ManualBlockSprinkler = GetValue($this->GetIDForIdent("ManualBlockSprinkler"));
-
+		
 		if ($ManualBlockSprinkler == 1) { 
 			$this->SetTimerInterval("Group1SprinklerStringStop",0); //stops timer
+			/*
+			if ($WriteToLog == 1 AND $LogManualBlockSprinkler == 0 ) {
+				IPS_LogMessage("Beregnungssteuerung", "!!! Manuelle Blockade der Beregnung - alle Vorgänge wurden unterbrochen");
+				$LogManualBlockSprinkler = 1;
+			}
+			*/
 			$this->Group1SprinklerStringStop();
 		}
 		else if ($ManualBlockSprinkler == 0) {
-			
+			/*
+			if ($WriteToLog == 1 AND $LogManualBlockSprinkler == 1) {
+				IPS_LogMessage("Beregnungssteuerung", "!!! Manuelle Blockade der Beregnung aufgehoben");
+				$LogManualBlockSprinkler = 0;
+			}
+			*/
 		}
 
 		//manually start sprinkler via webfront
@@ -260,6 +300,9 @@ class Irrigation_Control extends IPSModule
 					SetValue($this->GetIDForIdent("Group1CurrentString"), 0);
 					$this->SetBuffer("Group1ActivationManual", 1);
 					$this->SetBuffer("Group1ActivationManualTimer", $ManualActivationRunTime);
+					if ($WriteToLog == 1) {
+						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Alle Abschnitte werden für ".$ManualActivationRunTime." Minuten beregnet");
+					}
 					$this->SprinklerOperationGroup1();
 				}
 				else if ($ManualActivationString > 0) { //will only run 1 specific string
@@ -267,6 +310,9 @@ class Irrigation_Control extends IPSModule
 					$this->SetBuffer("Group1ManualActivationSingleString", 1);
 					$this->SetBuffer("Group1ActivationManual", 1);
 					$this->SetBuffer("Group1ActivationManualTimer", $ManualActivationRunTime);
+					if ($WriteToLog == 1) {
+						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Abschnitt ".$ManualActivationString." wird für ".$ManualActivationRunTime." Minuten beregnet");
+					}
 					$this->SprinklerOperationGroup1();
 				}
 			}
@@ -461,6 +507,9 @@ class Irrigation_Control extends IPSModule
 		$Group1Active = $this->ReadPropertyBoolean("Group1Active"); //On
 		$ManualBlockSprinkler = GetValue($this->GetIDForIdent("ManualBlockSprinkler"));
 
+		$Notification = $this->ReadPropertyBoolean("Notification");
+		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
+
 		$Group1String1Active = $this->ReadPropertyBoolean("Group1String1Active"); //On
 		$Group1String2Active = $this->ReadPropertyBoolean("Group1String2Active"); //On
 		$Group1String3Active = $this->ReadPropertyBoolean("Group1String3Active"); //On
@@ -484,6 +533,14 @@ class Irrigation_Control extends IPSModule
 		
 		if ($Group1CurrentString == 0 AND $Group1String1HasRun == 0 AND $Group1String2HasRun == 0 AND $Group1String3HasRun == 0 AND $Group1String4HasRun == 0 AND $Group1String5HasRun == 0 AND $Group1String6HasRun == 0) {
 			SetValue($this->GetIDForIdent("Group1CurrentString"), 1);
+			if ($WriteToLog == 1) {
+				IPS_LogMessage("Beregnungssteuerung", "Automatischer Start der Beregnung - Gruppe 1");
+			}
+			if ($Notification == 1) {
+				$this->SetBuffer("NotifierTitle", "Beregnung");
+				$this->SetBuffer("NotifierMessage", "Beregnung automatisch gestartet");
+				$this->NotifyApp();
+			}
 			//unset($Group1String1HasRun);
 			//unset($Group1String2HasRun);
 			//unset($Group1String3HasRun);
@@ -495,7 +552,24 @@ class Irrigation_Control extends IPSModule
 		else {
 			//nix
 		}
-		
+		/*
+		if ($LogEntryForAutomationWritten = NULL) {
+			$LogEntryForAutomationWritten == 0;
+		}
+
+		if ($WriteToLog == 1 AND $LogEntryForAutomationWritten == 0) {
+			IPS_LogMessage("Beregnungssteuerung", "Automatischer Start der Beregnung - Gruppe 1");
+			$LogEntryForAutomationWritten = 1;
+
+			if ($Notification == 1) {
+				$this->SetBuffer("NotifierTitle", "Beregnung");
+				$this->SetBuffer("NotifierMessage", "Beregnung automatisch gestartet");
+				$this->NotifyApp();
+			}
+									
+		}
+		}
+		*/
 		//$Group1CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
 		if ($Group1Active == 1 AND $ManualBlockSprinkler == 0) {
@@ -555,6 +629,14 @@ class Irrigation_Control extends IPSModule
 					}
 					SetValue($this->GetIDForIdent("Group1CurrentString"), 0);
 					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
+					if ($WriteToLog == 1) {
+						IPS_LogMessage("Beregnungssteuerung", "Automatischer Stop der Beregnung - Gruppe 1");
+					}
+					if ($Notification == 1) {
+						$this->SetBuffer("NotifierTitle", "Beregnung");
+						$this->SetBuffer("NotifierMessage", "Beregnung automatisch beendet");
+						$this->NotifyApp();
+					}
 				break;
 				case 1:
 					if ($Group1String1Active == 1 AND $Group1String1HasRun == 0) {
@@ -803,4 +885,18 @@ class Irrigation_Control extends IPSModule
 		
 
 	}
+
+	public function NotifyApp() {
+		$NotifierTitle = $this->GetBuffer("NotifierTitle");
+		$NotifierMessage = $this->GetBuffer("NotifierMessage");
+		//NotifierTitle - NotifierMessage
+		//$WebFrontMobile = $this->ReadPropertyInteger("WebFrontMobile");
+		$WebFrontMobile = IPS_GetInstanceListByModuleID('{3565B1F2-8F7B-4311-A4B6-1BF1D868F39E}')[0];
+		// to send notifications
+		$this->SendDebug("Notifier","********** App Notifier **********", 0);
+		$this->SendDebug("Notifier","Message: ".$NotifierMessage." was sent", 0);			
+		WFC_PushNotification($WebFrontMobile, $NotifierTitle, $NotifierMessage , "", 0);
+	}
+
+
 }
