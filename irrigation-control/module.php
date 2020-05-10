@@ -109,8 +109,8 @@ class Irrigation_Control extends IPSModule
 		//Properties
 		$this->RegisterTimer('SprinklerOperationGroup1', 0, 'IC_SprinklerOperationGroup1($_IPS["TARGET"]);'); //Test
 		$this->RegisterTimer('Watchdog', 0, 'IC_Watchdog($_IPS["TARGET"]);'); //Timer to monitor things and perform frequent tasks
-		$this->RegisterTimer('Watchdog', 0, 'IC_WeatherAndSoil($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
-		$this->RegisterTimer('Watchdog', 0, 'IC_Evapotranspiration($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
+		$this->RegisterTimer('WeatherAndSoil', 0, 'IC_WeatherAndSoil($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
+		$this->RegisterTimer('Evapotranspiration', 0, 'IC_Evapotranspiration($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
 		$this->RegisterTimer('Group1SprinklerStringStop', 0, 'IC_Group1SprinklerStringStop($_IPS["TARGET"]);'); //Timer starting Irrigation
 
 		//Variables always needed
@@ -268,7 +268,7 @@ class Irrigation_Control extends IPSModule
 		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
 		$this->RainInLastHour();
 		$this->AutomaticActivationDeactivation();
-		
+
 		/*
 		$Notification = $this->ReadPropertyBoolean("Notification");
 		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
