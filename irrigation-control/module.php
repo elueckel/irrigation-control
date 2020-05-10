@@ -208,7 +208,22 @@ class Irrigation_Control extends IPSModule
 	}
 
 	public function Evapotranspiration() {
-		// check on Evapotranspiration
+		/*
+		$temp=26;
+		$feucht=40;
+
+		$z1=7.602*$temp;
+		$z2=241.2+$temp;
+		$satt = 6.11213 * pow(10,($z1/$z2)); //Sttigungsdampfdruck
+		$dampf = ($satt * $feucht) / 100;  //Wasserdampfdruck
+		$sattdef = $satt - $dampf;    //Sttigungsdefizit
+		$verdunst = 0.24 * $sattdef;  //Verdunstungsrate pro Tag
+		$verdunst = round($verdunst, 2);
+		if ($verdunst > 7) {
+		$verdunst = 7;
+		}
+		SetValueFloat("Evapotranspiration_Rasen", (FLOAT)$verdunst);
+		*/
 	}
 
 	public function WeatherAndSoil() {
