@@ -117,9 +117,9 @@ class Irrigation_Control extends IPSModule
 		if (IPS_VariableProfileExists("IC.SoilHumidity") == false) {
 			IPS_CreateVariableProfile("IC.SoilHumidity", 1);
 			IPS_SetVariableProfileIcon("IC.SoilHumidity", "Drops");
-			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 0, $this->Translate("Wet"), "");
-			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 1, $this->Translate("Drying Out"), "");
-			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 2, $this->Translate("Dry"), "");
+			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 0, $this->Translate("Wet"));
+			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 1, $this->Translate("Drying Out"));
+			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 2, $this->Translate("Dry"));
 		}
 
 		if (IPS_VariableProfileExists("IC.ManualGroup") == false) {
