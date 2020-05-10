@@ -164,7 +164,7 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterVariableBoolean('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'));
 		$this->RegisterVariableBoolean('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'));					
 		$this->RegisterVariableBoolean('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'));
-
+		$this->EnableAction("ManualActivationSprinkler");
 	}
 
 	public function ApplyChanges()
