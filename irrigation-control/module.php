@@ -179,7 +179,7 @@ class Irrigation_Control extends IPSModule
 		$this->MaintainVariable('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String2Active") == 1);
 		$this->MaintainVariable('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String3Active") == 1);
 		*/
-
+		$this->EnableAction("ManualActivationSprinkler");
 		$ComponentActive = $this->ReadPropertyBoolean("ComponentActive");
 		$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
