@@ -83,6 +83,8 @@
 	[
 		{ "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
 		{ "type": "Button", "label": "Test Estimate Needed Rain", "onClick": "IC_EstimateNeededRain($id);" },
+		{ "type": "Button", "label": "Test Weather and Soil", "onClick": "IC_WeatherAndSoil($id);" },
+		{ "type": "Button", "label": "Test Evapotranspiration Calculation", "onClick": "IC_Evapotranspiration($id);" },
 		{ "type": "Button", "label": "Test SprinklerOperationGroup1", "onClick": "IC_SprinklerOperationGroup1($id);" },
 		{ "type": "Button", "label": "Test Rain in last hour", "onClick": "IC_RainInLastHour($id);" }
 	]

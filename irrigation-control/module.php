@@ -109,6 +109,8 @@ class Irrigation_Control extends IPSModule
 		//Properties
 		$this->RegisterTimer('SprinklerOperationGroup1', 0, 'IC_SprinklerOperationGroup1($_IPS["TARGET"]);'); //Test
 		$this->RegisterTimer('Watchdog', 0, 'IC_Watchdog($_IPS["TARGET"]);'); //Timer to monitor things and perform frequent tasks
+		$this->RegisterTimer('Watchdog', 0, 'IC_WeatherAndSoil($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
+		$this->RegisterTimer('Watchdog', 0, 'IC_Evapotranspiration($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
 		$this->RegisterTimer('Group1SprinklerStringStop', 0, 'IC_Group1SprinklerStringStop($_IPS["TARGET"]);'); //Timer starting Irrigation
 
 		//Variables always needed
@@ -164,7 +166,7 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterVariableBoolean('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'));
 		$this->RegisterVariableBoolean('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'));					
 		$this->RegisterVariableBoolean('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'));
-		$this->EnableAction("ManualActivationSprinkler");
+		
 	}
 
 	public function ApplyChanges()
@@ -179,15 +181,19 @@ class Irrigation_Control extends IPSModule
 		$this->MaintainVariable('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String2Active") == 1);
 		$this->MaintainVariable('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String3Active") == 1);
 		*/
-		$this->EnableAction("ManualActivationSprinkler");
+		
 		$ComponentActive = $this->ReadPropertyBoolean("ComponentActive");
 		$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
 		if ($ComponentActive == 1) {
 			$this->SetTimerInterval("Watchdog",10000);
+			$this->SetTimerInterval("Evapotranspiration",18000000);
+			$this->SetTimerInterval("WeatherAndSoil",18000000);
 		}
 		else if ($ComponentActive == 0) {
 			$this->SetTimerInterval("Watchdog",0);
+			$this->SetTimerInterval("Evapotranspiration",0);
+			$this->SetTimerInterval("WeatherAndSoil",0);
 		}
 
 		$this->SetResetTimerInterval();
@@ -201,8 +207,69 @@ class Irrigation_Control extends IPSModule
 		
 	}
 
+	public function Evapotranspiration() {
+		// check on Evapotranspiration
+	}
+
+	public function WeatherAndSoil() {
+
+		$Notification = $this->ReadPropertyBoolean("Notification");
+		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
+		
+		$this->EstimateSoilWetness();	// checks how dry the lawn is
+		
+		
+		$SensorRain = GetValue($this->ReadPropertyInteger("SensorRain"));
+		$CurrentRainBlockIrrigation = GetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"));
+		$Group1CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
+
+		if ($SensorRain == 1  AND $CurrentRainBlockIrrigation ==  0) { // it rains ... stop operation
+			$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain detected - irrigation is stopped'),0);
+			$this->SetTimerInterval("Group1SprinklerStringStop",0); //stops timer
+			SetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"), 1);
+			$this->SetBuffer("RainStoppedAtGroup1String", $Group1CurrentString);
+			//SetValue($this->GetIDForIdent("SprinklerDescisionText"),"Irrigation stopped due to rain at String: ".$Group1CurrentString,0);
+			$this->Group1SprinklerStringStop();
+		}
+		else if ($SensorRain == 0 AND $CurrentRainBlockIrrigation == 1) { // rain has stopped ... evaluate if further watering is need by soil humidity or amount of rain fallen
+			$this->SendDebug($this->Translate('Current Rain'),$this->Translate('************************************'),0);
+			SetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"), 0);
+			$CurrentRainBlocksIrrigation = $this->GetBuffer("CurrentRainBlocksIrrigation");
+
+			if ($CurrentRainBlocksIrrigation == 1) {
+				$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain has stopped - no further irrigation needed'),0);
+				SetValue($this->GetIDForIdent("Group1CurrentString"), 0); // places current string into waiting state = 0
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Regen hat aufgehört - Beregnung wird aufgrund von ausreichend Regen nicht fortgesetzt");							
+				}
+				$this->SprinklerOperationGroup1();
+			}
+			else if ($CurrentRainBlocksIrrigation == 0 ) {
+				//Get from buffer where irrigation stopped
+				$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain has stopped - not enough rain - irrigation will continue'),0);
+				$RainStoppedAtGroup1String = $this->GetBuffer("RainStoppedAtGroup1String");
+				SetValue($this->GetIDForIdent("Group1CurrentString"), $RainStoppedAtGroup1String);
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Regen hat aufgehört - Es hat nicht ausreichend geregnet um Boden zu bewässern, Beregnung wird fortgesetzt");						
+				}
+				$this->SprinklerOperationGroup1();
+			}
+			
+
+		}
+		
+		
+	}
+
+
+
 	public function Watchdog() {
 
+		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
+		$this->RainInLastHour();
+		$this->AutomaticActivationDeactivation();
+		
+		/*
 		$Notification = $this->ReadPropertyBoolean("Notification");
 		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
 		
@@ -266,6 +333,7 @@ class Irrigation_Control extends IPSModule
 		}
 		*/
 		//set via webfront and will block any sprinkler operation until disabled
+
 		$ManualBlockSprinkler = GetValue($this->GetIDForIdent("ManualBlockSprinkler"));
 		
 		if ($ManualBlockSprinkler == 1) { 
