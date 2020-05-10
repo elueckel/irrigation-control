@@ -125,19 +125,19 @@ class Irrigation_Control extends IPSModule
 		if (IPS_VariableProfileExists("IC.ManualGroup") == false) {
 			IPS_CreateVariableProfile("IC.ManualGroup", 1);
 			IPS_SetVariableProfileIcon("IC.ManualGroup", "Gear");
-			IPS_SetVariableProfileAssociation("IC.ManualGroup", 1, $this->Translate("Group 1"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualGroup", 2, $this->Translate("Group 2"), "");
+			IPS_SetVariableProfileAssociation("IC.ManualGroup", 1, $this->Translate("Group 1"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualGroup", 2, $this->Translate("Group 2"), "", -1);
 		}
 
 		if (IPS_VariableProfileExists("IC.ManualString") == false) {
 			IPS_CreateVariableProfile("IC.ManualString", 1);
 			IPS_SetVariableProfileIcon("IC.ManualString", "Gear");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 1, $this->Translate("String 1"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 2, $this->Translate("String 2"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 3, $this->Translate("String 3"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 4, $this->Translate("String 4"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 5, $this->Translate("String 5"), "");
-			IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 6"), "");
+			IPS_SetVariableProfileAssociation("IC.ManualString", 1, $this->Translate("String 1"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualString", 2, $this->Translate("String 2"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualString", 3, $this->Translate("String 3"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualString", 4, $this->Translate("String 4"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualString", 5, $this->Translate("String 5"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 6"), "", -1);
 		}
 		
 		if (IPS_VariableProfileExists("IC.Timer") == false) {
