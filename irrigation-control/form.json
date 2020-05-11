@@ -9,6 +9,7 @@
 		{ "type": "CheckBox", "name": "RainStopsIrrigation", "caption": "Stop Irrigation During Rain" },
 		{ "type": "SelectVariable", "name": "SensorRainAmount", "caption": "Rain Amount" },
 		{ "type": "SelectVariable", "name": "SensorTemperature", "caption": "Temperature" },
+		{ "type": "SelectVariable", "name": "SensorHumidity", "caption": "Humidity" },
 		{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" },
 		{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" },
 		{ "name": "MethodToEstimateDryout", "type": "Select", "caption": "MethodToEstimateDryout",
@@ -82,8 +83,6 @@
 	"actions":
 	[
 		{ "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
-		{ "type": "Button", "label": "Test Estimate Needed Rain", "onClick": "IC_EstimateNeededRain($id);" },
-		{ "type": "Button", "label": "Test Weather and Soil", "onClick": "IC_WeatherAndSoil($id);" },
 		{ "type": "Button", "label": "Test Evapotranspiration Calculation", "onClick": "IC_Evapotranspiration($id);" },
 		{ "type": "Button", "label": "Test SprinklerOperationGroup1", "onClick": "IC_SprinklerOperationGroup1($id);" },
 		{ "type": "Button", "label": "Test Rain in last hour", "onClick": "IC_RainInLastHour($id);" }
