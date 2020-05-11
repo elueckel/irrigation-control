@@ -31,7 +31,7 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterPropertyInteger("InformationRainInXDays",0);
 		
 		//Configuration
-		$this->RegisterPropertyInteger("MethodToEstimateDryout", "1"); //Soil humidity = default ... maybe in the future Evotranspiration
+		$this->RegisterPropertyInteger("MethodToEstimateDryout", "Soil Humidity"); //Soil humidity = default ... maybe in the future Evotranspiration
 
 
 		//Definitions
