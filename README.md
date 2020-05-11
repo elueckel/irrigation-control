@@ -13,6 +13,7 @@ Version 1.0
 * Setzen von Werten für ausreichend Regen ... wieviel Regen muss fallen um einen austrocknenden Boden wieder ausreichend zu bewässern
 * Unterbrechen der aktuellen Beregnung bei Regen und Wiederaufnahme wenn nicht genug Regen gefallen ist (es wird geprüft wieviel Regen in der letzten Stunde gefallen ist)
 * Unterbrechen der Beregnung wenn die Wettervorhersage genug Regen innerhalb des Beregnungsabstands vorhersagt. Für die Vorhersage empfehle ich mein Wunderground Modul welches die Regenmenge für bis zu 5 Tage aufrechnet. 
+* Um 14:00 wird die Evatranspiration berechnet
 * Benachrichtigung bei Start/Stop der Bewässerung
 * Eintrag ins Log bei Start/Stop
 
