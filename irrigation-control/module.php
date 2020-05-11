@@ -228,16 +228,11 @@ class Irrigation_Control extends IPSModule
 	}
 
 	public function Watchdog() {
-
-		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
-		$this->RainInLastHour(); // checks how much rain has fallen in the last hour in case irrigation is reactivated
-		$this->AutomaticActivationDeactivation(); // function to deactivate automatic execution
-
 		
 		$Notification = $this->ReadPropertyBoolean("Notification");
 		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
+		$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 		
-		$this->EstimateSoilWetness();	// checks how dry the lawn is
 		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
 		$this->RainInLastHour();
 		$this->AutomaticActivationDeactivation();
@@ -246,7 +241,7 @@ class Irrigation_Control extends IPSModule
 		$CurrentRainBlockIrrigation = GetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"));
 		$Group1CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
-		if ($SensorRain == 1  AND $CurrentRainBlockIrrigation ==  0) { // it rains ... stop operation
+		if ($SensorRain == 1  AND $CurrentRainBlockIrrigation ==  0 AND $CurrentString > 0) { // it rains ... stop operation
 			$this->SendDebug($this->Translate('Current Rain'),$this->Translate('Rain detected - irrigation is stopped'),0);
 			$this->SetTimerInterval("Group1SprinklerStringStop",0); //stops timer
 			SetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"), 1);
@@ -254,7 +249,7 @@ class Irrigation_Control extends IPSModule
 			//SetValue($this->GetIDForIdent("SprinklerDescisionText"),"Irrigation stopped due to rain at String: ".$Group1CurrentString,0);
 			$this->Group1SprinklerStringStop();
 		}
-		else if ($SensorRain == 0 AND $CurrentRainBlockIrrigation == 1) { // rain has stopped ... evaluate if further watering is need by soil humidity or amount of rain fallen
+		else if ($SensorRain == 0 AND $CurrentRainBlockIrrigation == 1 AND $CurrentString > 0) { // rain has stopped ... evaluate if further watering is need by soil humidity or amount of rain fallen
 			$this->SendDebug($this->Translate('Current Rain'),$this->Translate('************************************'),0);
 			SetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"), 0);
 			$CurrentRainBlocksIrrigation = $this->GetBuffer("CurrentRainBlocksIrrigation");
