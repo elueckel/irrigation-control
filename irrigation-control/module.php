@@ -20,7 +20,6 @@ class Irrigation_Control extends IPSModule
 		parent::Create();
 
 		//Sensors to figure out the environment
-		//update eines
 		
 		
 		$this->RegisterPropertyInteger("SensorRain",0);
