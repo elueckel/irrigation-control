@@ -1,4 +1,4 @@
-# Irrigation Control
+# Bewässerungssteuerung
 
 Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfür können Sensordaten (Bodenfeuchte,Regen, etc.) und Wettervorhersagen genutzt werden um Ventile von Sprinklern zu bestimmten Zeit ein und aus zuschalten.  
 
