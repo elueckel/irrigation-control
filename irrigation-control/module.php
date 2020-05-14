@@ -146,7 +146,7 @@ class Irrigation_Control extends IPSModule
 			IPS_CreateVariableProfile("IC.Timer", 1);
 			IPS_SetVariableProfileIcon("IC.Timer", "Clock");
 			IPS_SetVariableProfileDigits("IC.Timer", 0);
-			IPS_SetVariableProfileValues("IC.Timer", 0, 60, 0);
+			IPS_SetVariableProfileValues("IC.Timer", 0, 60, 1);
 		}
 
 		$this->RegisterVariableBoolean('ManualActivationSprinkler', $this->Translate('WF Manual Sprinkler Activation'),"~Switch");		
