@@ -581,12 +581,12 @@ class Irrigation_Control extends IPSModule
 				$this->SetBuffer("NotifierMessage", "Beregnung automatisch gestartet");
 				$this->NotifyApp();
 			}
-			unset($Group1String1HasRun);
-			unset($Group1String2HasRun);
-			unset($Group1String3HasRun);
-			unset($Group1String4HasRun);
-			unset($Group1String5HasRun);
-			unset($Group1String6HasRun);
+			//unset($Group1String1HasRun);
+			//unset($Group1String2HasRun);
+			//unset($Group1String3HasRun);
+			//unset($Group1String4HasRun);
+			//unset($Group1String5HasRun);
+			//unset($Group1String6HasRun);
 			$Group1CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Current String - was 0 and is now '.$Group1CurrentString),0);
 			//$this->SprinklerOperationGroup1();
@@ -618,7 +618,7 @@ class Irrigation_Control extends IPSModule
 			
 			$Group1MasterValve1 = $this->ReadPropertyInteger("Group1MasterValve1"); //Bolean Var on/off
 			$Group1MasterValve2 = $this->ReadPropertyInteger("Group1MasterValve2"); //Bolean Var on/off
-			$Group1MasterValveWaitTime = $this->ReadPropertyInteger("Group1MasterValveWaitTime");
+			//$Group1MasterValveWaitTime = $this->ReadPropertyInteger("Group1MasterValveWaitTime");
 			
 
 			if ($Group1MasterValve1 != 0) {
@@ -640,6 +640,7 @@ class Irrigation_Control extends IPSModule
 					$MasterValveWaitTimeActive = 1;
 				}
 			}
+
 
 			switch ($Group1CurrentString) {
 				case 0:
@@ -820,7 +821,7 @@ class Irrigation_Control extends IPSModule
 		}
 		else if ($Group1ActivationManual == 1) {
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Manual Timer: '.$StringTime.' for String '.$CurrentString),0);
-			$StringRunTime = $Group1ActivationManualTimer * 10000;
+			$StringRunTime = $Group1ActivationManualTimer * 60000;
 			$this->SetTimerInterval("Group1SprinklerStringStop",$StringRunTime);
 		}
 		//$this->SendDebug($this->Translate('Group 1'),$this->Translate('Timer set'),0);

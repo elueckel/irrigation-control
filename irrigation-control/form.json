@@ -2,84 +2,188 @@
     "elements":
     [
 		{ "type": "CheckBox", "name": "ComponentActive", "caption": "ComponentActive" },
-		{ "type": "Label", "label": "Environment Data" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "SelectVariable", "name": "SensorSoilHumidity", "caption": "Soil Humidity" },
-		{ "type": "SelectVariable", "name": "SensorRain", "caption": "Rain Sensor" },
-		{ "type": "CheckBox", "name": "RainStopsIrrigation", "caption": "Stop Irrigation During Rain" },
-		{ "type": "SelectVariable", "name": "SensorRainAmount", "caption": "Rain Amount" },
-		{ "type": "SelectVariable", "name": "SensorTemperature", "caption": "Temperature" },
-		{ "type": "SelectVariable", "name": "SensorHumidity", "caption": "Humidity" },
-		{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" },
-		{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" },
-		{ "name": "MethodToEstimateDryout", "type": "Select", "caption": "MethodToEstimateDryout",
-		"options": [
-			{ "label": "Soil Humidity", "value": "1" },
-			{ "label": "Evaporation - Inactive", "value": "2" }
+		{
+			"type": "ExpansionPanel",
+			"caption": "Base Configuration",
+			"items": [
+				{ "type": "Label", "label": "Weather Data (being used to control irrigation)" },
+				{ "type": "Label", "label": "Outside Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorTemperature", "caption": "Temperature" },
+						{ "type": "SelectVariable", "name": "SensorHumidity", "caption": "Humidity" },
+						{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" }
+					]
+				},
+				{ "type": "Label", "label": "Soil Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorSoilHumidity", "caption": "Soil Humidity" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorRain", "caption": "Rain Sensor" },
+						{ "type": "SelectVariable", "name": "SensorRainAmount", "caption": "Rain Amount" },
+						{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" }
+					]
+				},
+				{ "type": "Label", "label": "Weather forecasts and rain amounts can be retrieved via the Wunderground Module" },
+				{ "type": "Label", "label": "Wunderground PWS Sync & Forecast Module" },
+				{ "type": "Label", "label": "Notifications" },
+				{ "type": "Label", "label": "Notification via App requires symcon app and configured webfront" },				
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "CheckBox", "name": "Notification",  "caption": "Notifications" },
+						{ "type": "CheckBox", "name": "WriteToLog",  "caption": "Logging" }
+					]
+				}
 			]
 		},
-		{ "type": "Label", "label": "Estimate Drought" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "NumberSpinner", "name": "EstimateDryoutDryingThreshold", "caption": "Drying Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
-		{ "type": "NumberSpinner", "name": "EstimateDryoutDryThreshold", "caption": "Dry Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
-		{ "type": "Label", "label": "Rain Forecast" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
-		{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
-		{ "type": "Label", "label": "Notification via App requires symcon app and configured webfront" },				
-		{ "type": "CheckBox", "name": "Notification",  "caption": "Notifications" },
-		{ "type": "CheckBox", "name": "WriteToLog",  "caption": "Logging" },
-		{ "type": "Label", "label": "Group Settings" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1Active", "caption": "Active" },
-		{ "type": "NumberSpinner", "name": "Group1NumberStartHour", "caption": "Hour", "suffix": "mm", "minimum": "0", "maximum": "24" },
-		{ "type": "NumberSpinner", "name": "Group1NumberStartMinute", "caption": "Minute", "suffix": "mm", "minimum": "0", "maximum": "59" },
-		{ "type": "NumberSpinner", "name": "Group1ExecutionInterval", "caption": "Interval", "suffix": "days", "minimum": "0", "maximum": "7" },
-		{ "type": "CheckBox", "name": "Group1ExecuteNowOrNext", "caption": "First Run Today" },
-		{ "type": "Label", "label": "Master Group Valves" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1MasterValveActive", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1MasterValve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1MasterValve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1MasterValveWaitTime", "caption": "Delay", "suffix": "sec", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 1" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String1Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String1Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String1Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String1Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 2" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String2Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String2Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String2Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String2Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 3" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String3Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String3Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String3Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String3Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 4" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String4Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String4Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String4Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String4Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 5" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String5Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String5Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String5Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" },
-		{ "type": "Label", "label": "String 6" },
-		{ "type": "Label", "label": "*******************************" },
-		{ "type": "CheckBox", "name": "Group1String6Active", "caption": "Active" },
-		{ "type": "SelectVariable", "name": "Group1String6Valve1", "caption": "Valve 1" },
-		{ "type": "SelectVariable", "name": "Group1String6Valve2", "caption": "Valve 2" },
-		{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+		{
+			"type": "ExpansionPanel",
+			"caption": "Estimate Drought",
+			"items": [
+				{ "name": "MethodToEstimateDryout", "type": "Select", "caption": "MethodToEstimateDryout",
+					"options": [
+						{ "label": "Soil Humidity", "value": "1" },
+						{ "label": "Evaporation - Inactive", "value": "2" }
+						]
+				},
+				{ "type": "Label", "label": "Drought Thresholds when using humidity sensors (when is the lawn dry)" },
+				{ "type": "Label", "label": "*******************************" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "NumberSpinner", "name": "EstimateDryoutDryingThreshold", "caption": "Drying Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
+						{ "type": "NumberSpinner", "name": "EstimateDryoutDryThreshold", "caption": "Dry Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Thresholds (how much rain is needed to water the lawn)" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
+						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Data (current rain will stop irrigation / future rain as well)" },
+				{ "type": "Label", "label": "The amount of rain being needed to stop irrigation depends on humidy threshold" }
+			]
+		},
+		{
+			"type": "ExpansionPanel",
+			"caption": "Sprinkler Group 1",
+			"items": [
+				{ "type": "CheckBox", "name": "Group1Active", "caption": "Group Active" },
+				{ "type": "Label", "label": "*******************************" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "NumberSpinner", "name": "Group1NumberStartHour", "caption": "Hour", "suffix": "", "minimum": "0", "maximum": "24" },
+						{ "type": "NumberSpinner", "name": "Group1NumberStartMinute", "caption": "Minute", "suffix": "", "minimum": "0", "maximum": "59" },
+						{ "type": "NumberSpinner", "name": "Group1ExecutionInterval", "caption": "Interval", "suffix": "days", "minimum": "0", "maximum": "7" }
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "Master Valves",
+					"items": [
+						{ "type": "Label", "label": "A master valve can be used infront of irrigation strings and will be opened first and closed last" },
+						{ "type": "RowLayout",
+							"items": [
+								{ "type": "CheckBox", "name": "Group1MasterValveActive", "caption": "Active" },
+								{ "type": "SelectVariable", "name": "Group1MasterValve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1MasterValve2", "caption": "Valve 2" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 1",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String1Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [
+								{ "type": "SelectVariable", "name": "Group1String1Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String1Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String1Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 2",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String2Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [
+								{ "type": "SelectVariable", "name": "Group1String2Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String2Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String2Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 3",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String3Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [
+								{ "type": "SelectVariable", "name": "Group1String3Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String3Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String3Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 4",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String4Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [	
+								{ "type": "SelectVariable", "name": "Group1String4Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String4Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String4Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 5",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String5Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [	
+								{ "type": "SelectVariable", "name": "Group1String5Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String5Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				},
+				{
+					"type": "ExpansionPanel",
+					"caption": "String 6",
+					"items": [
+						{ "type": "CheckBox", "name": "Group1String6Active", "caption": "Active" },
+						{ "type": "RowLayout",
+							"items": [	
+								{ "type": "SelectVariable", "name": "Group1String6Valve1", "caption": "Valve 1" },
+								{ "type": "SelectVariable", "name": "Group1String6Valve2", "caption": "Valve 2" },
+								{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+							]
+						}
+					]
+				}
+			]
+		}
     ],
-
 	"actions":
 	[
 		{ "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
