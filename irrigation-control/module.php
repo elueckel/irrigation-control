@@ -130,6 +130,13 @@ class Irrigation_Control extends IPSModule
 			IPS_SetVariableProfileAssociation("IC.ManualGroup", 1, $this->Translate("Group 1"), "", -1);
 			IPS_SetVariableProfileAssociation("IC.ManualGroup", 2, $this->Translate("Group 2"), "", -1);
 		}
+		
+		if (IPS_VariableProfileExists("IC.StringRun") == false) {
+			IPS_CreateVariableProfile("IC.StringRun", 0);
+			IPS_SetVariableProfileIcon("IC.StringRun", "Gear");
+			IPS_SetVariableProfileAssociation("IC.StringRun", 0, $this->Translate("No"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Ja"), "", -1);
+		}
 
 		if (IPS_VariableProfileExists("IC.GroupAutomaticActivation") == false) {
 			IPS_CreateVariableProfile("IC.GroupAutomaticActivation", 1);
