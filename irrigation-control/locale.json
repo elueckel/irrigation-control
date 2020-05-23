@@ -37,6 +37,7 @@
             "Humidity Threshold": "Schwellwert Bodenfeuchte",
             "A master valve can be used infront of irrigation strings and will be opened first and closed last": "Ein Hauptventil kann vor den eigentlichen Strängen aktiviert werden",
             "Active": "Aktiv",
+	    "Master Valve": "Hauptventil",
             "Valve 1": "Ventil 1",
             "Valve 2": "Ventil 2",
             "String 1": "Strang 1",
