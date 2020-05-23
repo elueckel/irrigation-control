@@ -135,8 +135,16 @@ class Irrigation_Control extends IPSModule
 			IPS_CreateVariableProfile("IC.StringRun", 0);
 			IPS_SetVariableProfileIcon("IC.StringRun", "Gear");
 			IPS_SetVariableProfileAssociation("IC.StringRun", 0, $this->Translate("No"), "", -1);
-			IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Ja"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Yes"), "", -1);
 		}
+		
+		if (IPS_VariableProfileExists("IC.MasterValve") == false) {
+			IPS_CreateVariableProfile("IC.MasterValve", 0);
+			IPS_SetVariableProfileIcon("IC.MasterValve", "Drops");
+			IPS_SetVariableProfileAssociation("IC.MasterValve", 0, $this->Translate("Closed"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.MasterValve", 1, $this->Translate("Open"), "", -1);
+		}
+
 
 		if (IPS_VariableProfileExists("IC.GroupAutomaticActivation") == false) {
 			IPS_CreateVariableProfile("IC.GroupAutomaticActivation", 1);
@@ -175,14 +183,14 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterVariableFloat('Evapotranspiration', $this->Translate('Evapotranspiration Grass'),"~Rainfall");
 		$this->RegisterVariableString('SprinklerDescisionText', $this->Translate('Sprinkler Descision Text'));	
 		$this->RegisterVariableInteger('Group1CurrentString', $this->Translate('Group 1 Current String'));
-		$this->RegisterVariableBoolean('Group1MasterValve1', $this->Translate('Group 1 Master Valve 1'));
-		$this->RegisterVariableBoolean('Group1MasterValve2', $this->Translate('Group 1 Master Valve 2'));
-		$this->RegisterVariableBoolean('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'));
-		$this->RegisterVariableBoolean('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'));
-		$this->RegisterVariableBoolean('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'));
-		$this->RegisterVariableBoolean('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'));
-		$this->RegisterVariableBoolean('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'));					
-		$this->RegisterVariableBoolean('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'));
+		$this->RegisterVariableBoolean('Group1MasterValve1', $this->Translate('Group 1 Master Valve 1'),"IC.MasterValve");
+		$this->RegisterVariableBoolean('Group1MasterValve2', $this->Translate('Group 1 Master Valve 2'),"IC.MasterValve");
+		$this->RegisterVariableBoolean('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'),"IC.StringRun");
+		$this->RegisterVariableBoolean('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'),"IC.StringRun");
+		$this->RegisterVariableBoolean('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'),"IC.StringRun");
+		$this->RegisterVariableBoolean('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'),"IC.StringRun");
+		$this->RegisterVariableBoolean('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'),"IC.StringRun");					
+		$this->RegisterVariableBoolean('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'),"IC.StringRun");
 		
 	}
 
