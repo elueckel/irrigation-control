@@ -28,6 +28,7 @@
             "Dry Threshold": "Schwellwert Trocken",
             "Rain Thresholds (how much rain is needed to water the lawn)": "Regen Schwellwerte (wieviel Regen wird benötigt)",
             "Dryout Threshold": "Schwellwert Austrocknnung",
+	    "Drying out Threshold": "Schwellwert Austrocknung",
             "Dry Threshold": "Schwellwert Trockenheit",
             "Rain Data (current rain will stop irrigation / future rain as well)": "Regen Daten (aktueller Regen stoppt die Beregnung)",
             "The amount of rain being needed to stop irrigation depends on humidy threshold": "Die Menge an Regen die benötigt wird um die Trockenheit auszugleich - abhängig von Bodenfeuchte",
