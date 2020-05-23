@@ -62,7 +62,7 @@
 				{ "type": "Label", "label": "Rain Thresholds (how much rain is needed to water the lawn)" },
 				{ "type": "RowLayout",
 					"items": [
-						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
+						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Drying out Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
 						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" }
 					]
 				},
