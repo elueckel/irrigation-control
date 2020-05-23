@@ -2,8 +2,8 @@
 	"translations": {
 		"de": { 
             "Active": "Aktiv",
-	"Base Configuration": "Grundkonfiguration",
-	"Weather Data (being used to control irrigation)": "Wetter Daten (für die Kontrolle der Bewässerung)",
+	        "Base Configuration": "Grundkonfiguration",
+	        "Weather Data (being used to control irrigation)": "Wetter Daten (für die Kontrolle der Bewässerung)",
             "Outside Data": "Wetter Draussen",
             "Temperature": "Temperatur",
             "Humidity": "Luftfeuchte",
@@ -28,7 +28,7 @@
             "Dry Threshold": "Schwellwert Trocken",
             "Rain Thresholds (how much rain is needed to water the lawn)": "Regen Schwellwerte (wieviel Regen wird benötigt)",
             "Dryout Threshold": "Schwellwert Austrocknnung",
-	    "Drying out Threshold": "Schwellwert Austrocknung",
+	        "Drying out Threshold": "Schwellwert Austrocknung",
             "Dry Threshold": "Schwellwert Trockenheit",
             "Rain Data (current rain will stop irrigation / future rain as well)": "Regen Daten (aktueller Regen stoppt die Beregnung)",
             "The amount of rain being needed to stop irrigation depends on humidy threshold": "Die Menge an Regen die benötigt wird um die Trockenheit auszugleich - abhängig von Bodenfeuchte",
@@ -37,7 +37,7 @@
             "Humidity Threshold": "Schwellwert Bodenfeuchte",
             "A master valve can be used infront of irrigation strings and will be opened first and closed last": "Ein Hauptventil kann vor den eigentlichen Strängen aktiviert werden",
             "Active": "Aktiv",
-	    "Master Valves": "Hauptventile",
+	        "Master Valves": "Hauptventile",
             "Valve 1": "Ventil 1",
             "Valve 2": "Ventil 2",
             "String 1": "Strang 1",
@@ -52,7 +52,7 @@
             "Test Rain in last hour": "Test Regen in den letzten Tagen",
             "days": "Tage",
             "Humidity Threshold": "Schwellwert Bodenfeuchte",
-            "Wet": "Fucht",
+            "Wet": "Feucht",
             "Drying Out": "Trocknet Aus",
             "Dry": "Trocken",
             "Group 1": "Gruppe 1",
@@ -76,7 +76,11 @@
             "Group 1 String 3 Has Run": "Gruppe 1 Strang 3",
             "Group 1 String 4 Has Run": "Gruppe 1 Strang 4",
             "Group 1 String 5 Has Run": "Gruppe 1 Strang 5",
-            "Group 1 String 6 Has Run": "Gruppe 1 Strang 6"
+            "Group 1 String 6 Has Run": "Gruppe 1 Strang 6",
+	        "Open": "Offen",
+	        "Closed": "Geschlossen",
+	        "Yes": "Ja",
+	        "No": "Nein"
 		}
 	}
 }
