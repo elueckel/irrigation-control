@@ -1,7 +1,7 @@
 {
     "elements":
     [
-		{ "type": "CheckBox", "name": "ComponentActive", "caption": "ComponentActive" },
+		{ "type": "CheckBox", "name": "ComponentActive", "caption": "Active" },
 		{
 			"type": "ExpansionPanel",
 			"caption": "Base Configuration",
