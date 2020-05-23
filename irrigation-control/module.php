@@ -51,12 +51,12 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterPropertyBoolean("Group1Active", 0);
 		$this->RegisterPropertyInteger("Group1NumberStartHour","22");
 		$this->RegisterPropertyInteger("Group1NumberStartMinute","00");
-		$this->RegisterPropertyBoolean("Group1ExecuteNowOrNext", 0);
+		$this->RegisterPropertyInteger("Group1AutomaticActivationThresholdHumidity", 0);
 		$this->RegisterPropertyInteger("Group1ExecutionInterval",0);
-		$this->RegisterPropertyInteger("Group1OperationStartHour","22");
-		$this->RegisterPropertyInteger("Group1OperationStartMinute","00");
-		$this->RegisterPropertyInteger("Group1OperationEndHour","06");
-		$this->RegisterPropertyInteger("Group1OperationEndMinute","00");
+		//$this->RegisterPropertyInteger("Group1OperationStartHour","22");
+		//$this->RegisterPropertyInteger("Group1OperationStartMinute","00");
+		//$this->RegisterPropertyInteger("Group1OperationEndHour","06");
+		//$this->RegisterPropertyInteger("Group1OperationEndMinute","00");
 		
 
 		//Group 1
@@ -131,6 +131,14 @@ class Irrigation_Control extends IPSModule
 			IPS_SetVariableProfileAssociation("IC.ManualGroup", 2, $this->Translate("Group 2"), "", -1);
 		}
 
+		if (IPS_VariableProfileExists("IC.GroupAutomaticActivation") == false) {
+			IPS_CreateVariableProfile("IC.GroupAutomaticActivation", 1);
+			IPS_SetVariableProfileIcon("IC.GroupAutomaticActivation", "Robot");
+			IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 0, $this->Translate("No Automation"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 1, $this->Translate("Auto Enabled"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 2, $this->Translate("Auto Disabled"), "", -1);
+		}
+
 		if (IPS_VariableProfileExists("IC.ManualString") == false) {
 			IPS_CreateVariableProfile("IC.ManualString", 1);
 			IPS_SetVariableProfileIcon("IC.ManualString", "Gear");
@@ -151,10 +159,11 @@ class Irrigation_Control extends IPSModule
 
 		$this->RegisterVariableBoolean('ManualActivationSprinkler', $this->Translate('WF Manual Sprinkler Activation'),"~Switch");		
 		$this->RegisterVariableInteger('ManualActivationRunTime', $this->Translate('WF Manual Sprinkler Runtime'),"IC.Timer");
-		$this->RegisterVariableInteger('ManualActivationGroup', $this->Translate('WF Manual Sprinkler Group'),"IC.ManualGroup");		
+		$this->RegisterVariableInteger('ManualActivationGroup', $this->Translate('WF Manual Sprinkler Group'),"IC.ManualGroup");
 		$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"IC.ManualString");
 		$this->RegisterVariableBoolean('ManualBlockSprinkler', $this->Translate('WF Manual Sprinkler Block'),"~Switch");
 		$this->RegisterVariableBoolean('CurrentRainBlockIrrigation', $this->Translate('Irrigation blocked by rain'));
+		$this->RegisterVariableInteger('Group1AutomaticActivation', $this->Translate('Group 1 Automation'),"IC.GroupAutomaticActivation");				
 		$this->RegisterVariableInteger('SoilHumidity', $this->Translate('Soil Humidity'), "IC.SoilHumidity");
 		$this->RegisterVariableFloat('Evapotranspiration', $this->Translate('Evapotranspiration Grass'),"~Rainfall");
 		$this->RegisterVariableString('SprinklerDescisionText', $this->Translate('Sprinkler Descision Text'));	
@@ -188,7 +197,7 @@ class Irrigation_Control extends IPSModule
 
 		if ($ComponentActive == 1) {
 			$this->SetTimerInterval("Watchdog",10000);
-			//$this->SetTimerInterval("Evapotranspiration",18000000);
+			$this->SetTimerInterval("Evapotranspiration",18000000);
 			$now = new DateTime();
 			$target = new DateTime();
 			if ("14:00:00" < date("H:i")) {
@@ -228,7 +237,7 @@ class Irrigation_Control extends IPSModule
 	}
 
 	public function Watchdog() {
-		
+
 		$Notification = $this->ReadPropertyBoolean("Notification");
 		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
 		$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
@@ -236,6 +245,7 @@ class Irrigation_Control extends IPSModule
 		$this->DisableIrrigationDueToRainForecast(); // evaluates the needed rain in case it is due to rain in x days to deactivate automatic irrigation
 		$this->RainInLastHour();
 		$this->AutomaticActivationDeactivation();
+		$this->EstimateSoilWetness();
 		
 		$SensorRain = GetValue($this->ReadPropertyInteger("SensorRain"));
 		$CurrentRainBlockIrrigation = GetValue($this->GetIDForIdent("CurrentRainBlockIrrigation"));
@@ -347,74 +357,168 @@ class Irrigation_Control extends IPSModule
 	//************************************************************
 
 	public function AutomaticActivationDeactivation() {
-		$DescissionSoilHumidity = $this->GetBuffer("SoilHumidity");
+
+		$Notification = $this->ReadPropertyBoolean("Notification");
+		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
+
+		$DescissionSoilHumidity = $this->GetBuffer("SoilHumidity"); //0 Wet, 1 Drying out, 2 dry
 		$DescissionFutureRainBlocksIrrigation = $this->GetBuffer("FutureRainBlocksIrrigation");
+		
+		$Group1AutomaticActivationThresholdHumidity = $this->ReadPropertyInteger("Group1AutomaticActivationThresholdHumidity");
+		$Group1AutomaticActivationThresholdHumidityCurrentStatus = GetValue($this->GetIDForIdent("Group1AutomaticActivation"));
+		$SensorSoilHumidity = GetValue($this->ReadPropertyInteger("SensorSoilHumidity"));
+
+		if ($Group1AutomaticActivationThresholdHumidity == 0) {
+			//Automatic activation of Group 1 is disabled
+			$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation disabled'),0);
+			SetValue($this->GetIDForIdent("Group1AutomaticActivation"), 0);
+			$Group1AutomaticMode = 0;
+		}
+		else if ($Group1AutomaticActivationThresholdHumidity !== 0) {
+			if ($SensorSoilHumidity > $Group1AutomaticActivationThresholdHumidity) {
+				$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned ON since above threshold'),0);
+				if ($Group1AutomaticActivationThresholdHumidityCurrentStatus !== 1) {
+					if ($WriteToLog == 1) {
+						IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch aktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
+					}
+					if ($Notification == 1) {
+						$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
+						$this->SetBuffer("NotifierMessage", "Gruppe 1 automatisch aktiviert");
+						$this->NotifyApp();
+					}
+				}
+				$Group1AutomaticMode = 1;
+				SetValue($this->GetIDForIdent("Group1AutomaticActivation"), 1);
+				//Soil in Group 1 is above group threshold => Turn on
+			}
+			else if ($SensorSoilHumidity < $Group1AutomaticActivationThresholdHumidity) {
+				$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned OFF since below threshold'),0);
+				if ($Group1AutomaticActivationThresholdHumidityCurrentStatus !== 2) {
+					if ($WriteToLog == 1) {
+						IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch deaktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
+					}
+					if ($Notification == 1) {
+						$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
+						$this->SetBuffer("NotifierMessage", "Gruppe 1 automatisch deaktiviert");
+						$this->NotifyApp();
+					}
+				}
+				$Group1AutomaticMode = 2;
+				SetValue($this->GetIDForIdent("Group1AutomaticActivation"), 2);
+				//Soil in Group 1 is below group threshold => Turn off
+			}
+		}
+
 
 		if ($DescissionSoilHumidity == 0) { //soil is wet - no irrigation needed
 			//$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is wet ... no irrigation needed'),0);
 			$this->SetTimerInterval('SprinklerOperationGroup1', 0);
 		}
 		else if ($DescissionSoilHumidity > 0) {
-			if ($DescissionFutureRainBlocksIrrigation == 0) { //soil is dry - no rain inbound => irrigate
-				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... automatic irrigation turned on'),0);
+			if ($DescissionFutureRainBlocksIrrigation == 0 AND $Group1AutomaticMode == 1) { //soil is dry - no rain inbound => irrigate
+				$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... automatic irrigation turned on group activation ENABLED'),0);
 				$this->SetResetTimerInterval();
 			}
-			else if ($DescissionFutureRainBlocksIrrigation == 0) {  //soil is dry - rain is inbound => stop irrigation
-				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... rain is inbound => stop irrigation'),0);
+			if ($DescissionFutureRainBlocksIrrigation == 1 OR $Group1AutomaticMode == 2) {  //soil is dry - rain is inbound => stop irrigation
+				$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... rain is inbound or automatic group activation disabled => stop irrigation'),0);
 				$this->SetTimerInterval('SprinklerOperationGroup1', 0);
 			}
 		}
 
 	}
-
+	
 
 	//function sets timer for Group1 
 	//******************************
 
 	public function SetResetTimerInterval() {
-		$Hour = $this->ReadPropertyInteger("Group1NumberStartHour");
-		$Minute = $this->ReadPropertyInteger("Group1NumberStartMinute");
-		$Group1ExecutionInterval = $this->ReadPropertyInteger("Group1ExecutionInterval");
-		$NewTime = $Hour.":".$Minute;
-		$now = new DateTime();
-		$target = new DateTime();
-		if ($NewTime < date("H:i")) {
-			$target->modify('+1 day');
+		$Group1Active = $this->ReadPropertyBoolean("Group1Active");
+
+		if ($Group1Active == 1) {
+			$Hour = $this->ReadPropertyInteger("Group1NumberStartHour");
+			$Minute = $this->ReadPropertyInteger("Group1NumberStartMinute");
+			$Group1ExecutionInterval = $this->ReadPropertyInteger("Group1ExecutionInterval");
+			$NewTime = $Hour.":".$Minute;
+			$now = new DateTime();
+			$target = new DateTime();
+			if ($NewTime < date("H:i")) {
+				$target->modify('+1 day');
+			}
+			if ($Group1ExecutionInterval == 1) {
+				$target->modify('+'.$Group1ExecutionInterval.' day');
+			}
+			if ($Group1ExecutionInterval > 1) {
+				$target->modify('+'.$Group1ExecutionInterval.' days');
+			}
+			$target->setTime($Hour, $Minute, 0);
+			$diff = $target->getTimestamp() - $now->getTimestamp();
+			$Group1Timer = $diff * 1000;
+			$this->SetTimerInterval('SprinklerOperationGroup1', $Group1Timer);
 		}
-		if ($Group1ExecutionInterval == 1) {
-			$target->modify('+'.$Group1ExecutionInterval.' day');
+		else if ($Group1Active == 0) {
+			$this->SetTimerInterval('SprinklerOperationGroup1', 0);
 		}
-		if ($Group1ExecutionInterval > 1) {
-			$target->modify('+'.$Group1ExecutionInterval.' days');
-		}
-		$target->setTime($Hour, $Minute, 0);
-		$diff = $target->getTimestamp() - $now->getTimestamp();
-		$Group1Timer = $diff * 1000;
-		$this->SetTimerInterval('SprinklerOperationGroup1', $Group1Timer);
 	} 
 
 
-	//function check how dry the soil is  
+	//function check how dry the soil is
 	//**********************************
 
 	public function EstimateSoilWetness() {
+
+		$Notification = $this->ReadPropertyBoolean("Notification");
+		$WriteToLog = $this->ReadPropertyBoolean("WriteToLog");
+
 		$SensorSoilHumidty = GetValue($this->ReadPropertyInteger("SensorSoilHumidity"));
 		$EstimateDryoutDryingThreshold = $this->ReadPropertyInteger("EstimateDryoutDryingThreshold");
 		$EstimateDryoutDryThreshold = $this->ReadPropertyInteger("EstimateDryoutDryThreshold");
+		$CurrentStatusSoilHumidity = GetValue($this->GetIDForIdent("SoilHumidity"));
+		
+		$Group1AutomaticActivationThresholdHumidity = $this->ReadPropertyInteger("Group1AutomaticActivationThresholdHumidity");
 
 		if ($SensorSoilHumidty < $EstimateDryoutDryingThreshold) {
 			//$this->SendDebug($this->Translate('Soil Humidity'),$this->Translate('Soil Humidity Sensor: ').$SensorSoilHumidty.$this->Translate(' cb - translates to soil is wet'),0);
-			SetValue($this->GetIDForIdent("SoilHumidity"), 0);
-			$this->SetBuffer("SoilHumidity", 0);
+			if ($CurrentStatusSoilHumidity !== 0) {
+				SetValue($this->GetIDForIdent("SoilHumidity"), 0);
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Bodenfeuchte hat gewechselt auf feucht");
+				}
+				if ($Notification == 1) {
+					$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
+					$this->SetBuffer("NotifierMessage", "Bodenfeuchte hat gewechselt auf feucht");
+					$this->NotifyApp();
+				}
+			}
+			$this->SetBuffer("SoilHumidity", 0); //Sprinkler Mode??
 		}
 		else if ($SensorSoilHumidty >= $EstimateDryoutDryingThreshold AND $SensorSoilHumidty <= $EstimateDryoutDryThreshold) {
 			//$this->SendDebug($this->Translate('Soil Humidity'),$this->Translate('Soil Humidity Sensor: ').$SensorSoilHumidty.$this->Translate(' cb - translates to soil is drying out'),0);
-			SetValue($this->GetIDForIdent("SoilHumidity"), 1);
+			if ($CurrentStatusSoilHumidity !== 1) {
+				SetValue($this->GetIDForIdent("SoilHumidity"), 1);
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Bodenfeuchte hat gewechselt auf trocknet aus");
+				}
+				if ($Notification == 1) {
+					$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
+					$this->SetBuffer("NotifierMessage", "Bodenfeuchte hat gewechselt auf trocknet aus");
+					$this->NotifyApp();
+				}
+			}	
 			$this->SetBuffer("SoilHumidity", 1);
 		}
 		else if ($SensorSoilHumidty > $EstimateDryoutDryThreshold) {
 			//$this->SendDebug($this->Translate('Soil Humidity'),$this->Translate('Soil Humidity Sensor: ').$SensorSoilHumidty.$this->Translate(' cb - translates to soil is dry'),0);
-			SetValue($this->GetIDForIdent("SoilHumidity"), 2);
+			if ($CurrentStatusSoilHumidity !== 2) {
+				SetValue($this->GetIDForIdent("SoilHumidity"), 2);
+				if ($WriteToLog == 1) {
+					IPS_LogMessage("Beregnungssteuerung", "Bodenfeuchte hat gewechselt auf trocken");
+				}
+				if ($Notification == 1) {
+					$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
+					$this->SetBuffer("NotifierMessage", "Bodenfeuchte hat gewechselt auf trocken");
+					$this->NotifyApp();
+				}
+			}
 			$this->SetBuffer("SoilHumidity", 2);
 		}
 	}

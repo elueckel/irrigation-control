@@ -80,7 +80,8 @@
 					"items": [
 						{ "type": "NumberSpinner", "name": "Group1NumberStartHour", "caption": "Hour", "suffix": "", "minimum": "0", "maximum": "24" },
 						{ "type": "NumberSpinner", "name": "Group1NumberStartMinute", "caption": "Minute", "suffix": "", "minimum": "0", "maximum": "59" },
-						{ "type": "NumberSpinner", "name": "Group1ExecutionInterval", "caption": "Interval", "suffix": "days", "minimum": "0", "maximum": "7" }
+						{ "type": "NumberSpinner", "name": "Group1ExecutionInterval", "caption": "Interval", "suffix": "days", "minimum": "0", "maximum": "7" },
+						{ "type": "NumberSpinner", "name": "Group1AutomaticActivationThresholdHumidity", "caption": "Humidity Threshold", "suffix": "cb", "minimum": "0", "maximum": "100" }
 					]
 				},
 				{
