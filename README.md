@@ -7,7 +7,7 @@ Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfü
 * 1 Gruppe mit 6 Abschnitten mit je 2 Ventilen
 * 2 Masterventile welche den Strängen vorgeschaltet sind (Sicherheit und Druck)
 * Steuerung der Einschaltzeit (z.B. um 23 Uhr, alle 3 Tage) und Laufzeit pro Abschnitt (bis zu 60 Minuten)
-* Auslesen eines Bodensensors und Setzen von Werten wann der Boden feucht, am austrocknen und trocken ist
+* Auslesen eines Bodensensors und Setzen von Werten wann der Boden feucht, am austrocknen und trocken ist (von mir verwendet sind Irrometer via Davis/Meteobridge - mehr Infos: https://www.irrometer.com/basics.html - Ausgabe erfolgt in Centibar (cb))
 * Automatischer Start der Beregnung bei Überschreitung der Trockenheit
 * Setzen von Werten für ausreichend Regen ... wieviel Regen muss fallen um einen austrocknenden Boden wieder ausreichend zu bewässern
 * Unterbrechen der aktuellen Beregnung bei Regen und Wiederaufnahme wenn nicht genug Regen gefallen ist (es wird geprüft wieviel Regen in der letzten Stunde gefallen ist)
