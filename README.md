@@ -4,7 +4,7 @@ Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfü
 
 
 ## Version 1.0
-* 1 Gruppe mit 6 Abschnitten mit je 2 Ventilen
+* 1 Gruppe mit 6 Abschnitten mit je 2 Ventilen (Homematic)
 * 2 Masterventile welche den Strängen vorgeschaltet sind (Sicherheit und Druck)
 * Steuerung der Einschaltzeit (z.B. um 23 Uhr, alle 3 Tage) und Laufzeit pro Abschnitt (bis zu 60 Minuten)
 * Auslesen eines Bodensensors und Setzen von Werten wann der Boden feucht, am austrocknen und trocken ist (von mir verwendet sind Irrometer via Davis/Meteobridge - mehr Infos: https://www.irrometer.com/basics.html - Ausgabe erfolgt in Centibar (cb))
