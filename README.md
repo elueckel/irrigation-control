@@ -3,7 +3,7 @@
 Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfür können Sensordaten (Bodenfeuchte,Regen, etc.) und Wettervorhersagen genutzt werden um Ventile von Sprinklern zu bestimmten Zeit ein und aus zuschalten.  
 
 
-##Version 1.0
+## Version 1.0
 * 1 Gruppe mit 6 Abschnitten mit je 2 Ventilen
 * 2 Masterventile welche den Strängen vorgeschaltet sind (Sicherheit und Druck)
 * Steuerung der Einschaltzeit (z.B. um 23 Uhr, alle 3 Tage) und Laufzeit pro Abschnitt (bis zu 60 Minuten)
@@ -16,7 +16,7 @@ Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfü
 * Benachrichtigung bei Start/Stop der Bewässerung
 * Eintrag ins Log bei Start/Stop, Änderungen im Bereich der Bewässerungsautomation
 
-##Variablen zur Einbindung in ein Webfront/Mobiles Gerät - WF Variablen
+## Variablen zur Einbindung in ein Webfront/Mobiles Gerät - WF Variablen
 * Stop einer aktuellen Beregnung
 * Manueller Start der Beregnung - 0 alle aktiven Abschnitte werden durchlaufen / Auswahl eines bestimmten Abschnitts startet nur diesen
 * Manuelle Zeit - Zeitvorgabe für die manuelle Beregnung (z.B. kann man einen Abschnitt so mal für 1 Minute testen) 
