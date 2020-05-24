@@ -929,11 +929,11 @@ class Irrigation_Control extends IPSModule
 
 
 		if ($StringValve1 != 0) {
-			HM_WriteValueBoolean($StringValve1, "STATE", 1)
+			HM_WriteValueBoolean($StringValve1, "STATE", 1);
 		}
 
 		if ($StringValve2 != 0) {
-			HM_WriteValueBoolean($StringValve2, "STATE", 1)
+			HM_WriteValueBoolean($StringValve2, "STATE", 1);
 			//SetValue($StringValve2,1);
 		}
 
@@ -966,12 +966,12 @@ class Irrigation_Control extends IPSModule
 		$this->SendDebug($this->Translate('Group 1'),$this->Translate('Current String - Stop Sprinkler: '.$CurrentString),0);		
 		if ($StringValve1 != 0) {
 			//SetValue($StringValve1,0);
-			HM_WriteValueBoolean($StringValve1, "STATE", 0)
+			HM_WriteValueBoolean($StringValve1, "STATE", 0);
 		}
 
 		if ($StringValve2 != 0) {
 			//SetValue($StringValve2,0);
-			HM_WriteValueBoolean($StringValve2, "STATE", 0)
+			HM_WriteValueBoolean($StringValve2, "STATE", 0);
 		}
 
 		$this->SetTimerInterval("Group1SprinklerStringStop",0); // Stoppt timer
