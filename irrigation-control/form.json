@@ -91,7 +91,7 @@
 							"items": [
 								{ "type": "CheckBox", "name": "Group1MasterValveActive", "caption": "Active" },
 								{ "type": "SelectInstance", "name": "Group1MasterValve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1MasterValve2", "caption": "Valve 2" }
+								{ "type": "SelectInstance", "name": "Group1MasterValve2", "caption": "Valve 2" }
 							]
 						}
 					]
@@ -103,8 +103,8 @@
 						{ "type": "CheckBox", "name": "Group1String1Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [
-								{ "type": "SelectVariable", "name": "Group1String1Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String1Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String1Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String1Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String1Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
@@ -117,8 +117,8 @@
 						{ "type": "CheckBox", "name": "Group1String2Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [
-								{ "type": "SelectVariable", "name": "Group1String2Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String2Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String2Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String2Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String2Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
@@ -131,8 +131,8 @@
 						{ "type": "CheckBox", "name": "Group1String3Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [
-								{ "type": "SelectVariable", "name": "Group1String3Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String3Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String3Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String3Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String3Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
@@ -145,8 +145,8 @@
 						{ "type": "CheckBox", "name": "Group1String4Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [	
-								{ "type": "SelectVariable", "name": "Group1String4Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String4Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String4Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String4Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String4Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
@@ -159,8 +159,8 @@
 						{ "type": "CheckBox", "name": "Group1String5Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [	
-								{ "type": "SelectVariable", "name": "Group1String5Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String5Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String5Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String5Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
@@ -173,8 +173,8 @@
 						{ "type": "CheckBox", "name": "Group1String6Active", "caption": "Active" },
 						{ "type": "RowLayout",
 							"items": [	
-								{ "type": "SelectVariable", "name": "Group1String6Valve1", "caption": "Valve 1" },
-								{ "type": "SelectVariable", "name": "Group1String6Valve2", "caption": "Valve 2" },
+								{ "type": "SelectInstance", "name": "Group1String6Valve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1String6Valve2", "caption": "Valve 2" },
 								{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
 							]
 						}
