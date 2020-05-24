@@ -52,7 +52,6 @@
 						]
 				},
 				{ "type": "Label", "label": "Drought Thresholds when using humidity sensors (when is the lawn dry)" },
-				{ "type": "Label", "label": "*******************************" },
 				{ "type": "RowLayout",
 					"items": [
 						{ "type": "NumberSpinner", "name": "EstimateDryoutDryingThreshold", "caption": "Drying Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },

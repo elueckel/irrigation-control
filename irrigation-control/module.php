@@ -736,7 +736,8 @@ class Irrigation_Control extends IPSModule
 				$Group1MasterValve1Var = GetValue($this->GetIDForIdent("Group1MasterValve1"));
 				if ($Group1MasterValve1Var == 0) {
 					$this->SendDebug($this->Translate('Group 1'),$this->Translate('Master Valves 1 opened'),0);
-					SetValue($Group1MasterValve1,1);
+					//SetValue($Group1MasterValve1,1);
+					HM_WriteValueBoolean($Group1MasterValve1, "STATE", 1);
 					SetValue($this->GetIDForIdent("Group1MasterValve1"), 1);
 					$MasterValveWaitTimeActive = 1;
 				}
@@ -746,7 +747,8 @@ class Irrigation_Control extends IPSModule
 				$Group1MasterValve2Var = GetValue($this->GetIDForIdent("Group1MasterValve2"));
 				if ($Group1MasterValve2Var == 0) {
 					$this->SendDebug($this->Translate('Group 1'),$this->Translate('Master Valves 2 opened'),0);
-					SetValue($Group1MasterValve2,1);
+					//SetValue($Group1MasterValve2,1);
+					HM_WriteValueBoolean($Group1MasterValve1, "STATE", 1);
 					SetValue($this->GetIDForIdent("Group1MasterValve2"), 1);
 					$MasterValveWaitTimeActive = 1;
 				}
@@ -767,12 +769,14 @@ class Irrigation_Control extends IPSModule
 					if ($Group1MasterValve1 != 0) {
 						$this->SendDebug($this->Translate('Group 1'),$this->Translate('Master Valves 1 closed'),0);
 						SetValue($this->GetIDForIdent("Group1MasterValve1"), 0);
-						SetValue($Group1MasterValve1,0);
+						//SetValue($Group1MasterValve1,0);
+						HM_WriteValueBoolean($Group1MasterValve1, "STATE", 0);
 					}
 					if ($Group1MasterValve2 != 0) {
 						$this->SendDebug($this->Translate('Group 1'),$this->Translate('Master Valves 2 closed'),0);
 						SetValue($this->GetIDForIdent("Group1MasterValve2"), 0);
-						SetValue($Group1MasterValve2,0);
+						//SetValue($Group1MasterValve2,0);
+						HM_WriteValueBoolean($Group1MasterValve2, "STATE", 0);
 					}
 					SetValue($this->GetIDForIdent("Group1CurrentString"), 0);
 					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
@@ -925,11 +929,12 @@ class Irrigation_Control extends IPSModule
 
 
 		if ($StringValve1 != 0) {
-			SetValue($StringValve1,1);
+			HM_WriteValueBoolean($StringValve1, "STATE", 1)
 		}
 
 		if ($StringValve2 != 0) {
-			SetValue($StringValve2,1);
+			HM_WriteValueBoolean($StringValve2, "STATE", 1)
+			//SetValue($StringValve2,1);
 		}
 
 		if ($Group1ActivationManual == 0) {
@@ -960,11 +965,13 @@ class Irrigation_Control extends IPSModule
 
 		$this->SendDebug($this->Translate('Group 1'),$this->Translate('Current String - Stop Sprinkler: '.$CurrentString),0);		
 		if ($StringValve1 != 0) {
-			SetValue($StringValve1,0);
+			//SetValue($StringValve1,0);
+			HM_WriteValueBoolean($StringValve1, "STATE", 0)
 		}
 
 		if ($StringValve2 != 0) {
-			SetValue($StringValve2,0);
+			//SetValue($StringValve2,0);
+			HM_WriteValueBoolean($StringValve2, "STATE", 0)
 		}
 
 		$this->SetTimerInterval("Group1SprinklerStringStop",0); // Stoppt timer
