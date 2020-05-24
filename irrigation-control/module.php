@@ -199,14 +199,7 @@ class Irrigation_Control extends IPSModule
 			
 		//Never delete this line!
 		parent::ApplyChanges();
-		/*
-		$vpos = 10;
-		$this->MaintainVariable('Group1CurrentString', $this->Translate('Group 1 Current String'), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("Group1Active") == 1);
-		$this->MaintainVariable('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String1Active") == 1);
-		$this->MaintainVariable('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String2Active") == 1);
-		$this->MaintainVariable('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("Group1String3Active") == 1);
-		*/
-		
+				
 		$ComponentActive = $this->ReadPropertyBoolean("ComponentActive");
 		$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
@@ -343,6 +336,7 @@ class Irrigation_Control extends IPSModule
 					if ($WriteToLog == 1) {
 						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Alle Abschnitte werden für ".$ManualActivationRunTime." Minuten beregnet");
 					}
+					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
 					$this->SprinklerOperationGroup1();
 				}
 				else if ($ManualActivationString > 0) { //will only run 1 specific string
@@ -353,6 +347,7 @@ class Irrigation_Control extends IPSModule
 					if ($WriteToLog == 1) {
 						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Abschnitt ".$ManualActivationString." wird für ".$ManualActivationRunTime." Minuten beregnet");
 					}
+					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
 					$this->SprinklerOperationGroup1();
 				}
 			}
