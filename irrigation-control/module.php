@@ -124,6 +124,14 @@ class Irrigation_Control extends IPSModule
 			IPS_SetVariableProfileAssociation("IC.SoilHumidity", 2, $this->Translate("Dry"), "", -1);
 		}
 
+		if (IPS_VariableProfileExists("IC.CurrentStatus") == false) {
+			IPS_CreateVariableProfile("IC.CurrentStatus", 1);
+			IPS_SetVariableProfileIcon("IC.CurrentStatus", "Gear");
+			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 0, $this->Translate("Inactive"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 1, $this->Translate("Running Automatically"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 2, $this->Translate("Running Manually"), "", -1);
+		}
+
 		if (IPS_VariableProfileExists("IC.ManualGroup") == false) {
 			IPS_CreateVariableProfile("IC.ManualGroup", 1);
 			IPS_SetVariableProfileIcon("IC.ManualGroup", "Gear");
@@ -132,10 +140,11 @@ class Irrigation_Control extends IPSModule
 		}
 		
 		if (IPS_VariableProfileExists("IC.StringRun") == false) {
-			IPS_CreateVariableProfile("IC.StringRun", 0);
+			IPS_CreateVariableProfile("IC.StringRun", 1);
 			IPS_SetVariableProfileIcon("IC.StringRun", "Gear");
 			IPS_SetVariableProfileAssociation("IC.StringRun", 0, $this->Translate("No"), "", -1);
 			IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Yes"), "", -1);
+			IPS_SetVariableProfileAssociation("IC.StringRun", 2, $this->Translate("Runnig"), "", -1);
 		}
 		
 		if (IPS_VariableProfileExists("IC.MasterValve") == false) {
@@ -177,6 +186,7 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterVariableInteger('ManualActivationGroup', $this->Translate('WF Manual Sprinkler Group'),"IC.ManualGroup");
 		$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"IC.ManualString");
 		$this->RegisterVariableBoolean('ManualBlockSprinkler', $this->Translate('WF Manual Sprinkler Block'),"~Switch");
+		$this->RegisterVariableInteger('Group1CurrentStatus', $this->Translate('Group 1 Current Status'),"IC.CurrentStatus");
 		$this->RegisterVariableBoolean('CurrentRainBlockIrrigation', $this->Translate('Irrigation blocked by rain'), "~Switch");
 		$this->RegisterVariableInteger('Group1AutomaticActivation', $this->Translate('Group 1 Automation'),"IC.GroupAutomaticActivation");				
 		$this->RegisterVariableInteger('SoilHumidity', $this->Translate('Soil Humidity'), "IC.SoilHumidity");
@@ -185,12 +195,12 @@ class Irrigation_Control extends IPSModule
 		$this->RegisterVariableInteger('Group1CurrentString', $this->Translate('Group 1 Current String'));
 		$this->RegisterVariableBoolean('Group1MasterValve1', $this->Translate('Group 1 Master Valve 1'),"IC.MasterValve");
 		$this->RegisterVariableBoolean('Group1MasterValve2', $this->Translate('Group 1 Master Valve 2'),"IC.MasterValve");
-		$this->RegisterVariableBoolean('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'),"IC.StringRun");
-		$this->RegisterVariableBoolean('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'),"IC.StringRun");
-		$this->RegisterVariableBoolean('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'),"IC.StringRun");
-		$this->RegisterVariableBoolean('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'),"IC.StringRun");
-		$this->RegisterVariableBoolean('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'),"IC.StringRun");					
-		$this->RegisterVariableBoolean('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'),"IC.StringRun");
+		$this->RegisterVariableInteger('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'),"IC.StringRun");
+		$this->RegisterVariableInteger('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'),"IC.StringRun");
+		$this->RegisterVariableInteger('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'),"IC.StringRun");
+		$this->RegisterVariableInteger('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'),"IC.StringRun");
+		$this->RegisterVariableInteger('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'),"IC.StringRun");					
+		$this->RegisterVariableInteger('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'),"IC.StringRun");
 		
 	}
 
@@ -325,6 +335,7 @@ class Irrigation_Control extends IPSModule
 		$ManualActivationRunTime = GetValue($this->GetIDForIdent("ManualActivationRunTime"));
 		$ManualActivationGroup = GetValue($this->GetIDForIdent("ManualActivationGroup"));
 		$ManualActivationString = GetValue($this->GetIDForIdent("ManualActivationString"));
+		$Group1CurrentStatus = GetValue($this->GetIDForIdent("Group1CurrentStatus"));
 				
 		if ($ManualActivationSprinkler == 1){
 			if ($ManualActivationGroup == 1) {
@@ -336,6 +347,8 @@ class Irrigation_Control extends IPSModule
 					if ($WriteToLog == 1) {
 						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Alle Abschnitte werden für ".$ManualActivationRunTime." Minuten beregnet");
 					}
+					$this->SendDebug($this->Translate('Manual Activation'),$this->Translate('All Strings'),0);
+					SetValue($this->GetIDForIdent("Group1CurrentStatus"), 2);
 					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
 					$this->SprinklerOperationGroup1();
 				}
@@ -344,20 +357,24 @@ class Irrigation_Control extends IPSModule
 					$this->SetBuffer("Group1ManualActivationSingleString", 1);
 					$this->SetBuffer("Group1ActivationManual", 1);
 					$this->SetBuffer("Group1ActivationManualTimer", $ManualActivationRunTime);
+					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0); // in case irrigation was manually started
 					if ($WriteToLog == 1) {
 						IPS_LogMessage("Beregnungssteuerung", "!!! Manueller Start der Beregnung - Abschnitt ".$ManualActivationString." wird für ".$ManualActivationRunTime." Minuten beregnet");
 					}
-					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
+					//$this->SendDebug($this->Translate('Manual Activation'),$this->Translate('Single String Number: ').$ManualActivationString,0);
+					SetValue($this->GetIDForIdent("Group1CurrentStatus"), 2);
 					$this->SprinklerOperationGroup1();
 				}
 			}
 			// Activation for Group 2 goes here
 		}
-		else if ($ManualActivationSprinkler == 0){ // set manual buffer variables with 0 to avoid empty values
+		
+		else if ($ManualActivationSprinkler == 0 AND $Group1CurrentStatus == 0){ // set manual buffer variables with 0 to avoid empty values
 			$this->SetBuffer("Group1ManualActivationSingleString", 0);
 			$this->SetBuffer("Group1ActivationManual", 0);
 			$this->SetBuffer("Group1ActivationManualTimer", 0);
 		}
+		
 
 		
 	}
@@ -380,16 +397,16 @@ class Irrigation_Control extends IPSModule
 
 		if ($Group1AutomaticActivationThresholdHumidity == 0) {
 			//Automatic activation of Group 1 is disabled
-			$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation disabled'),0);
+			//$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation disabled'),0);
 			SetValue($this->GetIDForIdent("Group1AutomaticActivation"), 0);
 			$Group1AutomaticMode = 0;
 		}
 		else if ($Group1AutomaticActivationThresholdHumidity !== 0) {
 			if ($SensorSoilHumidity > $Group1AutomaticActivationThresholdHumidity) {
-				$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned ON since above threshold'),0);
+				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned ON since above threshold'),0);
 				if ($Group1AutomaticActivationThresholdHumidityCurrentStatus !== 1) {
 					if ($WriteToLog == 1) {
-						IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch aktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
+						//IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch aktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
 					}
 					if ($Notification == 1) {
 						$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
@@ -402,10 +419,10 @@ class Irrigation_Control extends IPSModule
 				//Soil in Group 1 is above group threshold => Turn on
 			}
 			else if ($SensorSoilHumidity < $Group1AutomaticActivationThresholdHumidity) {
-				$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned OFF since below threshold'),0);
+				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned OFF since below threshold'),0);
 				if ($Group1AutomaticActivationThresholdHumidityCurrentStatus !== 2) {
 					if ($WriteToLog == 1) {
-						IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch deaktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
+						//IPS_LogMessage("Beregnungssteuerung", "Gruppe 1 automatisch deaktiviert - Bodenfeuchte ".$SensorSoilHumidity." Schwellwert ".$Group1AutomaticActivationThresholdHumidity);
 					}
 					if ($Notification == 1) {
 						$this->SetBuffer("NotifierTitle", "Beregnungssteuerung");
@@ -426,11 +443,11 @@ class Irrigation_Control extends IPSModule
 		}
 		else if ($DescissionSoilHumidity > 0) {
 			if ($DescissionFutureRainBlocksIrrigation == 0 AND $Group1AutomaticMode == 1) { //soil is dry - no rain inbound => irrigate
-				$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... automatic irrigation turned on group activation ENABLED'),0);
+				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... automatic irrigation turned on group activation ENABLED'),0);
 				$this->SetResetTimerInterval();
 			}
 			if ($DescissionFutureRainBlocksIrrigation == 1 OR $Group1AutomaticMode == 2) {  //soil is dry - rain is inbound => stop irrigation
-				$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... rain is inbound or automatic group activation disabled => stop irrigation'),0);
+				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Soil is dry ... rain is inbound or automatic group activation disabled => stop irrigation'),0);
 				$this->SetTimerInterval('SprinklerOperationGroup1', 0);
 			}
 		}
@@ -708,33 +725,13 @@ class Irrigation_Control extends IPSModule
 		else {
 			//nix
 		}
-		/*
-		if ($LogEntryForAutomationWritten = NULL) {
-			$LogEntryForAutomationWritten == 0;
-		}
-
-		if ($WriteToLog == 1 AND $LogEntryForAutomationWritten == 0) {
-			IPS_LogMessage("Beregnungssteuerung", "Automatischer Start der Beregnung - Gruppe 1");
-			$LogEntryForAutomationWritten = 1;
-
-			if ($Notification == 1) {
-				$this->SetBuffer("NotifierTitle", "Beregnung");
-				$this->SetBuffer("NotifierMessage", "Beregnung automatisch gestartet");
-				$this->NotifyApp();
-			}
-									
-		}
-		}
-		*/
-		//$Group1CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
-
+		
 		if ($Group1Active == 1 AND $ManualBlockSprinkler == 0) {
 			
 			$Group1MasterValve1 = $this->ReadPropertyInteger("Group1MasterValve1"); //Bolean Var on/off
 			$Group1MasterValve2 = $this->ReadPropertyInteger("Group1MasterValve2"); //Bolean Var on/off
 			//$Group1MasterValveWaitTime = $this->ReadPropertyInteger("Group1MasterValveWaitTime");
 			
-
 			if ($Group1MasterValve1 != 0) {
 				$Group1MasterValve1Var = GetValue($this->GetIDForIdent("Group1MasterValve1"));
 				if ($Group1MasterValve1Var == 0) {
@@ -760,6 +757,7 @@ class Irrigation_Control extends IPSModule
 				case 0:
 					$this->SendDebug($this->Translate('Group 1'),$this->Translate('All strings have run - irrigation completed'),0);
 					$this->SetTimerInterval("Group1SprinklerStringStop",0); // Stoppt timer
+					SetValue($this->GetIDForIdent("Group1CurrentStatus"), 0); // Sets Sprinkler Status back to 0 - off
 					SetValue($this->GetIDForIdent("Group1String1HasRun"), 0);
 					SetValue($this->GetIDForIdent("Group1String2HasRun"), 0);
 					SetValue($this->GetIDForIdent("Group1String3HasRun"), 0);
@@ -795,6 +793,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String1Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 1);
+						SetValue($this->GetIDForIdent("Group1String1HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 1);
 						$this->Group1SprinklerStringStart();
 					}
@@ -811,6 +810,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String2Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 2);
+						SetValue($this->GetIDForIdent("Group1String2HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 2);
 						$this->Group1SprinklerStringStart();
 					}
@@ -828,6 +828,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String3Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 3);
+						SetValue($this->GetIDForIdent("Group1String3HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 3);
 						$this->Group1SprinklerStringStart();
 					}
@@ -844,6 +845,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String4Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 4);
+						SetValue($this->GetIDForIdent("Group1String4HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 4);
 						$this->Group1SprinklerStringStart();
 					}
@@ -861,6 +863,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String5Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 5);
+						SetValue($this->GetIDForIdent("Group1String5HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 5);
 						$this->Group1SprinklerStringStart();
 					}
@@ -878,6 +881,7 @@ class Irrigation_Control extends IPSModule
 						$this->SetBuffer("Group1StringStringTime", $this->ReadPropertyInteger("Group1String6Time")); //Time to Water
 						//$this->SetBuffer("Group1StringLiterPerHour", GetValue($this->ReadPropertyInteger("String1LiterPerHour"))); //Info to countup 
 						SetValue($this->GetIDForIdent("Group1CurrentString"), 6);
+						SetValue($this->GetIDForIdent("Group1String6HasRun"), 2);
 						$this->SetBuffer("Group1CurrentString", 6);
 						$this->Group1SprinklerStringStart();
 					}
@@ -931,11 +935,13 @@ class Irrigation_Control extends IPSModule
 		if ($Group1ActivationManual == 0) {
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Automatic Timer: '.$StringTime.' for String '.$CurrentString),0);
 			$StringRunTime = $StringTime * 60000;
+			SetValue($this->GetIDForIdent("Group1CurrentStatus"), 1);
 			$this->SetTimerInterval("Group1SprinklerStringStop",$StringRunTime);
 		}
 		else if ($Group1ActivationManual == 1) {
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Manual Timer: '.$StringTime.' for String '.$CurrentString),0);
 			$StringRunTime = $Group1ActivationManualTimer * 60000;
+			SetValue($this->GetIDForIdent("Group1CurrentStatus"), 2);
 			$this->SetTimerInterval("Group1SprinklerStringStop",$StringRunTime);
 		}
 		//$this->SendDebug($this->Translate('Group 1'),$this->Translate('Timer set'),0);
@@ -965,6 +971,8 @@ class Irrigation_Control extends IPSModule
 
 	
 		$this->SendDebug($this->Translate('Group 1'),$this->Translate('String '.$CurrentString.' has stopped watering'),0);
+		$this->SendDebug($this->Translate('Manual Activation'),$this->Translate('Status Manual Activation ').$Group1ManualActivationSingleString,0);
+		
 
 		switch ($CurrentString) {
 		case 1:

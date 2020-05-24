@@ -79,9 +79,10 @@
             "Group 1 String 5 Has Run": "Gruppe 1 Strang 5 wurde ausgeführt",
             "Group 1 String 6 Has Run": "Gruppe 1 Strang 6 wurde ausgeführt",
 	        "Open": "Offen",
-	        "Closed": "Geschlossen",
+            "Closed": "Geschlossen",
 	        "Yes": "Ja",
-	        "No": "Nein"
+            "No": "Nein",
+            "Running": "Läuft"
 		}
 	}
 }
