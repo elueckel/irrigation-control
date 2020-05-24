@@ -90,7 +90,7 @@
 						{ "type": "RowLayout",
 							"items": [
 								{ "type": "CheckBox", "name": "Group1MasterValveActive", "caption": "Active" },
-								{ "type": "SelectObject", "name": "Group1MasterValve1", "caption": "Valve 1" },
+								{ "type": "SelectInstance", "name": "Group1MasterValve1", "caption": "Valve 1" },
 								{ "type": "SelectVariable", "name": "Group1MasterValve2", "caption": "Valve 2" }
 							]
 						}
