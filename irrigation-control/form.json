@@ -75,7 +75,6 @@
 			"caption": "Sprinkler Group 1",
 			"items": [
 				{ "type": "CheckBox", "name": "Group1Active", "caption": "Group Active" },
-				{ "type": "Label", "label": "*******************************" },
 				{ "type": "RowLayout",
 					"items": [
 						{ "type": "NumberSpinner", "name": "Group1NumberStartHour", "caption": "Hour", "suffix": "", "minimum": "0", "maximum": "24" },
