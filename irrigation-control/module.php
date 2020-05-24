@@ -930,7 +930,7 @@ class Irrigation_Control extends IPSModule
 
 		if ($Group1ActivationManual == 0) {
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Automatic Timer: '.$StringTime.' for String '.$CurrentString),0);
-			$StringRunTime = $StringTime * 10000;
+			$StringRunTime = $StringTime * 60000;
 			$this->SetTimerInterval("Group1SprinklerStringStop",$StringRunTime);
 		}
 		else if ($Group1ActivationManual == 1) {
