@@ -19,7 +19,7 @@
             "Notifications": "Benachrichtigung",
             "Notification via App requires symcon app and configured webfront": "Benachrichtigung durch die App erfordet die Konfiguration im Webfront",
             "Logging": "Logging",
-            "Estimate Drought": "Bestimmung der Trockenheut",
+            "Estimate Drought": "Bestimmung der Trockenheit",
             "Method to estimate dryout": "Methode die Trockenheit zu bestimmen",
             "Soil Humidity": "Bodenfeuchte",
             "Evaporation - Inactive": "Evapotranspiration - Inaktiv",
@@ -85,7 +85,8 @@
             "No": "Nein",
             "Running": "Läuft",
             "Hour": "Stunde",
-            "Duration": "Laufzeit"
+            "Duration": "Laufzeit",
+            "Inactive": "Inaktiv"
 		}
 	}
 }
