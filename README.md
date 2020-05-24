@@ -22,5 +22,5 @@ Das Beregungsmodul für Symcon ermöglicht die Steuerung von Sprinklern. Hierfü
 * Manuelle Zeit - Zeitvorgabe für die manuelle Beregnung (z.B. kann man einen Abschnitt so mal für 1 Minute testen) 
 * Ausgabe ob Gruppe(n) automatisch anhand von Bodenfeuchte ein oder ausgeschaltet werden - ebenso ob automation inaktiv ist
 
-Watchdog
+## Watchdog
 * Der Watchdog überprüft alle 10 Sekunden ob in die Ausführung eingegriffen werden muss. Den Eingriffen gehören automatische Ereignisse wie erkannter Regen oder manueller Start/Stop.
