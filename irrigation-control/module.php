@@ -166,6 +166,7 @@ class Irrigation_Control extends IPSModule
 		if (IPS_VariableProfileExists("IC.ManualString") == false) {
 			IPS_CreateVariableProfile("IC.ManualString", 1);
 			IPS_SetVariableProfileIcon("IC.ManualString", "Gear");
+			IPS_SetVariableProfileAssociation("IC.ManualString", 0, $this->Translate("Alle Strings"), "", -1);
 			IPS_SetVariableProfileAssociation("IC.ManualString", 1, $this->Translate("String 1"), "", -1);
 			IPS_SetVariableProfileAssociation("IC.ManualString", 2, $this->Translate("String 2"), "", -1);
 			IPS_SetVariableProfileAssociation("IC.ManualString", 3, $this->Translate("String 3"), "", -1);
