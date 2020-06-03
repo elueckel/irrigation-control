@@ -105,7 +105,7 @@
 							"items": [
 								{ "type": "SelectInstance", "name": "Group1String1Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String1Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String1Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String1Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
@@ -119,7 +119,7 @@
 							"items": [
 								{ "type": "SelectInstance", "name": "Group1String2Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String2Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String2Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String2Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
@@ -133,7 +133,7 @@
 							"items": [
 								{ "type": "SelectInstance", "name": "Group1String3Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String3Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String3Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String3Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
@@ -147,7 +147,7 @@
 							"items": [	
 								{ "type": "SelectInstance", "name": "Group1String4Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String4Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String4Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String4Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
@@ -161,7 +161,7 @@
 							"items": [	
 								{ "type": "SelectInstance", "name": "Group1String5Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String5Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String5Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
@@ -175,7 +175,7 @@
 							"items": [	
 								{ "type": "SelectInstance", "name": "Group1String6Valve1", "caption": "Valve 1" },
 								{ "type": "SelectInstance", "name": "Group1String6Valve2", "caption": "Valve 2" },
-								{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "60" }
+								{ "type": "NumberSpinner", "name": "Group1String6Time", "caption": "Duration", "suffix": "min", "minimum": "0", "maximum": "180" }
 							]
 						}
 					]
