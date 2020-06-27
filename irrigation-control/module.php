@@ -419,7 +419,7 @@ class Irrigation_Control extends IPSModule
 				SetValue($this->GetIDForIdent("Group1AutomaticActivation"), 1);
 				//Soil in Group 1 is above group threshold => Turn on
 			}
-			else if ($SensorSoilHumidity < $Group1AutomaticActivationThresholdHumidity) {
+			else if ($SensorSoilHumidity <= $Group1AutomaticActivationThresholdHumidity) {
 				//$this->SendDebug($this->Translate('Automation'),$this->Translate('Automatic Group Activation enabled and turned OFF since below threshold'),0);
 				if ($Group1AutomaticActivationThresholdHumidityCurrentStatus !== 2) {
 					if ($WriteToLog == 1) {
